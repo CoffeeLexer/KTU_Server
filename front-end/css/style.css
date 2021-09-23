@@ -1,0 +1,25 @@
+body, html {
+    height: 100%;
+    box-sizing: content-box;
+}
+body {
+    color: #000000;
+    background-image: url("/assets/burger.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    padding: 0;
+    margin: 0;
+}
+.container {
+    padding-top: 5ch;
+    height: 100%;
+    border: solid 1px #ffffff;
+    padding-left: 25ch;
+    padding-right: 25ch;
+}
+.header {
+    border: solid 2px slategray;
+}
+#logo {
+    width: 175px;
+}
