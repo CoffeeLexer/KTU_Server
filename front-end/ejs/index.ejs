@@ -1,13 +1,19 @@
-<%- include('./html_header')-%>
-<div class="container">
-    <div class="header">
-        <img id="logo" src="Logo_1.png" alt="Come 'n Shed">
-    </div>
-    <div class="content">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id turpis et metus porta malesuada. Morbi condimentum iaculis nulla non consectetur. Aliquam tempor pharetra velit, et congue est vehicula non. Donec quam purus, scelerisque quis pulvinar ut, vulputate id quam. Suspendisse vel sem ligula. Sed in lorem scelerisque, convallis eros sed, pharetra massa. In hac habitasse platea dictumst. In quis felis facilisis, facilisis lacus at, tempus dolor. Donec vitae finibus turpis. Maecenas dolor velit, pharetra ac risus vitae, fermentum gravida nisl. Praesent quis porta lacus, at molestie libero. Proin ac tellus imperdiet, viverra lorem ac, ultricies nulla. Nam blandit leo non tortor mollis, at sollicitudin odio vehicula.
-    </div>
-    <div class="footer">
-        Footer
-    </div>
-</div>
-<%- include('./html_footer')-%>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title><%=title%></title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <div class="container">
+            <%-include('./header')-%>
+            <%-include('./navigation_bar')-%>
+            <%-include('./content')-%>
+            <%-include('./footer')-%>
+        </div>
+    </body>
+</html>

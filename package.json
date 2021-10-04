@@ -2,8 +2,12 @@
   "name": "KTU_Server",
   "version": "1.0.0",
   "dependencies": {
+    "deasync": "^0.1.23",
     "ejs": "^3.1.6",
     "express": "^5.0.0-alpha.8",
     "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "sync-mysql": "^3.0.1"
   }
 }
