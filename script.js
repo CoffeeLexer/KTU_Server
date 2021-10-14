@@ -1,7 +1,9 @@
 module.exports = {
     DB_RowCount,
     SyncQuery,
-    TimeNow
+    TimeNow,
+    GetNews,
+    GetNewsById
 }
 function TimeNow() {
     let time = new Date()
@@ -39,9 +41,32 @@ async function SyncQuery(database, sql) {
             if(err) reject(err);
             else resolve(result)
         })
-    }).then(response => {
-        x = response
     })
-    const y = await p;
-    return x
+    return p
+}
+async function GetNews(database) {
+    return new Promise((resolve, reject) => {
+        database.query(`select news.id, content, CONCAT(DATE_FORMAT(date_time, "%Y-%m-%d"), TIME_FORMAT(date_time, " %H:%i")) as \`time\`, fk_account as author from news
+            join admin a on a.id = news.fk_author`, (err, result) => {
+            if(err) reject(err);
+            else resolve(result)
+        })
+    })
+}
+async function GetNewsById(database, id) {
+    return new Promise((resolve, reject) => {
+        database.query(`select content, CONCAT(DATE_FORMAT(date_time, "%Y-%m-%d"), TIME_FORMAT(date_time, " %H:%i")) as time, fk_account as author from news
+            join admin a on a.id = news.fk_author where news.id = ${id}`, (err, result) => {
+            if(err) reject(err);
+            else resolve(result)
+        })
+    })
+}
+async function DatabaseQuery(database, sql) {
+    return new Promise((resolve, reject) => {
+        database.query(sql, (err, result) => {
+            if (err) reject(err);
+            else resolve(result)
+        })
+    })
 }

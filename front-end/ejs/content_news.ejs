@@ -1,0 +1,11 @@
+<%data.forEach(item => {%>
+<a class="empty" href="news/<%=item.id%>">
+    <div class="content justify">
+        Author: <b><%=item.author%></b>
+        <br>
+        <%=item.content.substr(0, item.content.indexOf('.'))%>
+        <br>
+        Announced on: <b><%=item.time%></b>
+    </div>
+</a>
+<%})%>
