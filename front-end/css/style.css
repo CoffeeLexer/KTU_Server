@@ -83,3 +83,26 @@ a.empty, a:visited.empty, a:link.empty {
     text-decoration: none;
     color: inherit;
 }
+
+h1 {
+    font-family: "Roboto", Arial, Helvetica, sans-serif;
+    display:inline-block;
+    padding: 0;
+    margin: 0;
+}
+p {
+    margin: 0;
+    padding: 0;
+}
+.mapouter {
+    position:relative;
+    text-align:right;
+    height:500px;
+    width:100%;
+}
+.gmap_canvas {
+    overflow:hidden;
+    background:none!important;
+    height:500px;
+    width:100%;
+}

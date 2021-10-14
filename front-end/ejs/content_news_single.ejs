@@ -1,9 +1,9 @@
-<%data.forEach(item => {%>
-    <div class="content justify">
-        Author: <b><%=item.author%></b>
-        <br>
-        <%=item.content%>
-        <br>
-        Announced on: <b><%=item.time%></b>
+<div class="content justify">
+    Author: <b><%=item.author%></b>
+    <br>
+    <%=item.content%>
+    <br>
+    <div style="text-align: right">
+        <b><%=item.time%></b>
     </div>
-<%})%>
+</div>

@@ -3,7 +3,9 @@ module.exports = {
     SyncQuery,
     TimeNow,
     GetNews,
-    GetNewsById
+    GetNewsById,
+    GetContacts,
+    GetContactsById
 }
 function TimeNow() {
     let time = new Date()
@@ -62,10 +64,48 @@ async function GetNewsById(database, id) {
         })
     })
 }
+async function GetContacts(database) {
+    return new Promise((resolve, reject) => {
+        database.query(`select
+                            substring_index(
+                                    reverse(
+                                            substring_index(
+                                                    reverse(address), ' ', 2
+                                                )
+                                        ), ' ', 1
+                                ) as city,
+                            address,
+                            id
+                        from branch
+                        order by city`, (err, result) => {
+            if(err) reject(err);
+            else resolve(result)
+        })
+    })
+}
 async function DatabaseQuery(database, sql) {
     return new Promise((resolve, reject) => {
         database.query(sql, (err, result) => {
             if (err) reject(err);
+            else resolve(result)
+        })
+    })
+}
+async function GetContactsById(database, id) {
+    return new Promise((resolve, reject) => {
+        database.query(`select
+                            substring_index(
+                                    reverse(
+                                            substring_index(
+                                                    reverse(address), ' ', 2
+                                                )
+                                        ), ' ', 1
+                                ) as city,
+                            address,
+                            id
+                        from branch
+                        where id = ${id}`, (err, result) => {
+            if(err) reject(err);
             else resolve(result)
         })
     })

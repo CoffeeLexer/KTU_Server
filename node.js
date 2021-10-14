@@ -1,4 +1,3 @@
-const http = require('http')
 const path = require('path')
 const express = require('express')
 const mysql = require('mysql')
@@ -38,11 +37,25 @@ server.get('/news', async (req, res) => {
         data: await script.GetNews(database)
     });
 })
+server.get('/contacts', async (req, res) => {
+    res.render('index_template', {
+        title: "My Title",
+        content: "content_contacts",
+        data: await script.GetContacts(database)
+    });
+})
+server.get('/contacts/*', async (req, res) => {
+    res.render('index_template', {
+        title: "My Title",
+        content: "content_contacts_single",
+        item: (await script.GetContactsById(database, req.url.substr(req.url.lastIndexOf('/') + 1)))[0]
+    });
+})
 server.get('/news/*', async (req, res) => {
     res.render('index_template', {
         title: "My Title",
         content: 'content_news_single',
-        data: await script.GetNewsById(database, req.url.substr(req.url.lastIndexOf('/') + 1))
+        item: (await script.GetNewsById(database, req.url.substr(req.url.lastIndexOf('/') + 1)))[0]
     });
 })
 server.get('/login', (req, res) => {
