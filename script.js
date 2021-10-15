@@ -1,9 +1,13 @@
+
+const crypto = require('crypto')
+
 module.exports = {
     DB_RowCount,
     SyncQuery,
     TimeNow,
     GetNews,
-    GetNewsById
+    GetNewsById,
+    AddAccount
 }
 function TimeNow() {
     let time = new Date()
@@ -68,5 +72,32 @@ async function DatabaseQuery(database, sql) {
             if (err) reject(err);
             else resolve(result)
         })
+    })
+}
+
+
+async function AddAccount(database, json_data){
+    const ssn = json_data['ssn']
+    const firstname = json_data['name']
+    const lastname = json_data['surname']
+    const birthday = json_data['birthday']
+    const phone = json_data['phone']
+
+    const username = json_data['username']
+    const email = json_data['email']
+    const password = crypto.createHash('sha256').update(json_data['password']).digest('hex')
+
+    return new Promise((resolve, reject) => {
+        database.query(`INSERT INTO person (ssn, firstname, lastname, birthday, phone) 
+                        VALUES ('${ssn}', '${firstname}', '${lastname}', '${birthday}', '${phone}');
+                        
+                        INSERT INTO account (username, email, fk_person, password)
+                        VALUES ('${username}', '${email}', '${ssn}', '${password}');
+                        
+                        INSERT INTO client (fk_account) VALUES ('${username}')`,
+                        (err, result) => {
+                        if(err) reject(err);
+                        else resolve(result)
+                        })
     })
 }

@@ -1,0 +1,84 @@
+<div class="content">
+    <form id="register_me" action="registration_complete" method="post">
+        <table class="login_container">
+            <tr>
+                <th><label for="name"><b>Vardas</b></label></th>
+                <th><input type="text" id="name" required/></th>
+            </tr>
+            <tr>
+                <th><label for="surname"><b>Pavardė</b></label></th>
+                <th><input type="text"id="surname" required/></th>
+            </tr>
+
+            <tr>
+                <th><label for="username"><b>Prisijungimo vardas</b></label></th>
+                <th><input type="text" id="username" required/></th>
+            </tr>
+
+            <tr>
+                <th><label for="ssn"><b>SSN</b></label></th>
+                <th><input type="number" id="ssn" required/></th>
+            </tr>
+
+            <tr>
+                <th><label for="birthday"><b>Gimimo data</b></label></th>
+                <th><input type="date" id="birthdate" required/></th>
+            </tr>
+
+            <tr>
+                <th><label for="phone"><b>Telefono numeris</b></label></th>
+                <th><input type="text" id="phone" required/></th>
+            </tr>
+
+            <tr>
+                <th><label for="email"><b>Elektroninis paštas</b></label></th>
+                <th><input type="text" id="email" required/></th>
+            </tr>
+
+            <tr>
+                <th><label for="password"><b>Slaptažodis</b></label></th>
+                <th><input type="password" id="password" required/></th>
+            </tr>
+
+            <tr>
+                <th><label for="rep_password"><b>Pakartokite slaptažodį</b></label></th>
+                <th><input type="password" id="rep_password" required/></th>
+            </tr>
+        </table>
+        <button type="submit">Registruotis</button>
+
+    </form>
+    <script>
+        console.log(`Page loaded`);
+        const form = document.getElementById('register_me')
+
+
+        async function registerUser(event){
+            event.preventDefault()
+            console.log(`Form Submitted! Time stamp: ${event.timeStamp}`);
+            const name = document.getElementById('name').value
+            const surname = document.getElementById('surname').value
+            const username = document.getElementById('username').value
+            const ssn = document.getElementById('ssn').value
+            const birthday = document.getElementById('birthdate').value
+            const phone = document.getElementById('phone').value
+            const email = document.getElementById('email').value
+            const password = document.getElementById('password').value
+            const rep_password = document.getElementById('rep_password').value
+
+            const result = await fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name, surname, username, ssn, birthday, email, password, rep_password, phone
+                })
+            }).then((res) => res.json())
+
+        }
+
+        form.addEventListener('submit', registerUser)
+        console.log(`Listener added`);
+    </script>
+</div>

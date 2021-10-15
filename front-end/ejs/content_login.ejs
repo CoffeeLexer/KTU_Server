@@ -1,13 +1,18 @@
 <div class="content">
     <form action="log_me_in" method="post">
-        <div class="login_container">
-            <label for="username"><b>Username</b></label>
-            <input type="text" placeholder="Enter Username" name="username" required>
-            <br>
-            <labe for="password"><b>Password</b></labe>
-            <input type="password" placeholder="Enter Password" name="password" required>
+        <table class="login_container">
+            <tr>
+                <th><label for="username"><b>Prisijungimo vardas</b></label></th>
+                <th><input type="text" name="username" required></th>
+            </tr>
 
-            <button type="submit">Login</button>
-        </div>
+            <tr>
+                <th><label for="password"><b>Slaptažodis</b></label></th>
+                <th><input type="password" name="password" required></th>
+            </tr>
+        </table>
+        <button type="submit">Prisijungti</button>
     </form>
+    <br>
+    <a class="empty" href="/register">Registruotis</a>
 </div>
