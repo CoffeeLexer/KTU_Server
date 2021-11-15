@@ -1,0 +1,10 @@
+<%
+    let data = await db.query("SELECT * FROM news")
+    data.forEach(element => {
+%>
+<div class="news_item">
+        <%= element['content'].split('.')[0] + '.' %>
+</div>
+<%
+    })
+%>

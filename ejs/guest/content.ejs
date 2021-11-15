@@ -1,0 +1,41 @@
+<div class="container">
+    <%
+        switch (option) {
+            case 'default':
+                %>
+                <%-await include('default');%>
+                <%
+                break
+            case 'news':
+                %>
+                <%-await include('news');%>
+                <%
+                break
+            case 'dishes':
+                %>
+                <%-await include('dishes');%>
+                <%
+                break
+            case 'login':
+                %>
+                <%-await include('login');%>
+                <%
+                break
+            case 'contacts':
+                %>
+                <%-await include('contacts');%>
+                <%
+                break
+            case 'register':
+                %>
+                <%-await include('register');%>
+                <%
+                break
+            default:
+                %>
+                <%-await include('../error_404');%>
+                <%
+                break
+        }
+    %>
+</div>

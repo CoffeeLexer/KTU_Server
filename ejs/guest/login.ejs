@@ -1,0 +1,33 @@
+<div style="color: red; padding: 4px"
+<%
+    if(session.error === '') {
+%>
+     class="hidden"
+<%
+    }
+%>
+>
+<%=
+    session.error
+%>
+</div>
+<br><br><br>
+<div style="width: 250px; margin: auto;">
+<form method="post">
+    <label>Vartotojas</label>
+    <br>
+    <input type="text" name="primary" style="width: 100%">
+    <br>
+    <label>Slaptažodis</label>
+    <br>
+    <input type="text" name="password" style="width: 100%">
+    <br>
+    <input type="submit" style="width: 100%" value="Prisijungti">
+</form>
+    <hr>
+    Nesate užsiregistraves?
+    <button class="simple" style="width: 100%" onclick="redirect('/register')">
+        Registruotis
+    </button>
+</div>
+<br><br><br><br>
