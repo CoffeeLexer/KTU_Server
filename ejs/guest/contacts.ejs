@@ -1,6 +1,27 @@
-<div style="margin: 4px">
-    <%
-
-    %>
-
-</div>
+<%
+    let data = await db.query("SELECT SUBSTRING_INDEX(REVERSE(SUBSTRING_INDEX(REVERSE(address), ' ', 2)), ' ', 1) as miestas, id, address FROM system.branch order by miestas, address")
+    let city = ''
+    let flag = false
+    data.forEach(element => {
+    if(element['miestas'] !== city) {
+        city = element['miestas']
+        if(flag) {
+            // SAME CITY
+%>
+            </div>
+<%
+        }
+        flag = true
+%>
+            <div class="news_item">
+                <h1><%=element['miestas']%></h1>
+<%
+    }
+%>
+    <div class="news_item" onclick="redirect('<%= '/branch/'+element['id'] %>')">
+        <%= element['address'] %>
+    </div>
+<%
+    })
+%>
+            </div>

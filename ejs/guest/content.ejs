@@ -2,18 +2,24 @@
     <%
         switch (option) {
             case 'default':
-                %>
-                <%-await include('default');%>
-                <%
-                break
             case 'news':
                 %>
                 <%-await include('news');%>
                 <%
                 break
+                case 'news_item':
+                %>
+                <%-await include('news_item');%>
+                <%
+                break
             case 'dishes':
                 %>
                 <%-await include('dishes');%>
+                <%
+                break
+            case 'dish':
+                %>
+                <%-await include('dish');%>
                 <%
                 break
             case 'login':
@@ -29,6 +35,11 @@
             case 'register':
                 %>
                 <%-await include('register');%>
+                <%
+                break
+            case 'branch':
+                %>
+                <%-await include('branch');%>
                 <%
                 break
             default:

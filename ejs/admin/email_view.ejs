@@ -1,0 +1,69 @@
+<%
+let type = url.split('/')[1]
+let id = url.split('/')[2]
+let element = (await db.query(`SELECT * FROM system.email WHERE id = ${id}`))[0]
+let time = new Date(element['date_time'])
+let time_s = `${time.getFullYear()}-${time.getMonth()}-${time.getDate()} ${time.getHours()}:${time.getMinutes()}`
+if(type === 'inbox') {
+%>
+    <div class="news_item">
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <td style="width: 1px">Siuntėjas:</td>
+                <td><%=element['fk_author']%></td>
+            </tr>
+            <tr style="border-bottom: 1px solid white">
+                <td style="width: 1px">Data:</td>
+                <td><%=time_s%></td>
+            </tr>
+            <tr style="border-bottom: 1px solid white">
+                <td>Tema:</td>
+                <td><%=element['topic']%></td>
+            </tr>
+            <tr>
+                <td>Turinys:</td>
+                <td><%=element['content']%></td>
+            </tr>
+        </table>
+    </div>
+<%
+}
+else {
+    let receivers = await db.query(`SELECT * FROM system.email_recipient WHERE fk_email = '${id}'`)
+    let result = ''
+    let flag = false
+    let singular = true
+    receivers.forEach(element => {
+        if(flag) {
+            result += ', '
+            singular = false
+        }
+        else {
+            flag = true
+        }
+        result += element['fk_recipient']
+    })
+%>
+<div class="news_item">
+    <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+            <td style="width: 1px"><%if(singular){%>Gavėjas<%}else{%>Gavėjai<%}%>:</td>
+            <td><%=result%></td>
+        </tr>
+        <tr style="border-bottom: 1px solid white">
+            <td>Data:</td>
+            <td><%=time_s%></td>
+        </tr>
+        <tr style="border-bottom: 1px solid white">
+            <td>Tema:</td>
+            <td><%=element['topic']%></td>
+        </tr>
+        <tr>
+            <td>Turinys:</td>
+            <td><%=element['content']%></td>
+        </tr>
+    </table>
+</div>
+<%
+}
+%>

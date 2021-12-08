@@ -1,0 +1,15 @@
+<%
+let id = url.split('/')[1]
+let data = await db.query(`SELECT * FROM system.dish WHERE id ='${id}'`)
+element = data[0]
+%>
+<div class="news_item">
+    <%= element['name'] %>
+    <hr>
+    <%= element['description'] %>
+    <hr>
+    <%= element['price'].toFixed(2) %>€
+</div>
+<%
+
+%>

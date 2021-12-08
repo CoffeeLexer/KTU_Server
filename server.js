@@ -106,6 +106,41 @@ server.post('/register', async (request, response) => {
     request.session.error = error.toString().substr(4)
     response.redirect('/register')
 })
+server.post('/admin_register',  async (request, response) => {
+    let error = ''
+    let username = request.body.username
+    let email = request.body.email
+    let password_1 = request.body.password_1
+    let password_2 = request.body.password_2
+    error = username ? error : error + '<br>Vartotojo vardas nėra užpildytas'
+    error = email ? error : error + '<br>Vartotojo el. paštas nėra užpildytas'
+    error = password_1 ? error : error + '<br>Vartotojo slaptažodis nėra užpildytas'
+    error = password_2 ? error : error + '<br>Vartotojo kartojamas slaptažodis nėra užpildytas'
+    if(!error)
+        error = password_1 === password_2 ? error : '<br>Slaptažodžiai turi sutapti'
+    if(!error) {
+        let result = await db.query(`SELECT * FROM account WHERE username = '${username}'`)
+        if(result.length !== 0)
+            error += '<br>Vartotojas tokiu vardu jau užregistruotas'
+        result = await db.query(`SELECT * FROM account WHERE email = '${email}'`)
+        if(result.length !== 0)
+            error += '<br>Vartotojas tokiu el. paštu jau užregistruotas'
+    }
+    if(!error) {
+        await db.query(`INSERT INTO account(username, email, password) value ('${username}', '${email}', '${hash(password_1, pepper)}')`)
+        await db.query(`INSERT INTO admin(fk_account) VALUE ('${username}')`)
+        return response.redirect('/admin_register')
+    }
+    request.session.single = true
+    request.session.error = error.toString().substr(4)
+    response.redirect('/admin_register')
+})
+server.post('/news_update',  async (request, response) => {
+    let id = await request.body.id
+    let value = await request.body.value
+    await db.query(`UPDATE system.news SET content = '${value}' WHERE id = '${id}'`);
+    response.send('Done!')
+})
 server.get('/logout', (request, response) => {
     request.session.account = ''
     response.redirect('/')
@@ -115,10 +150,8 @@ server.get(/.*/, async (request, response) => {
     let split = url.split('/')
     let type = (request.session.account && request.session.account.type) ? request.session.account.type : 'guest'
     let option = split[0] ? split[0] : "default"
-    if(option === "default") {
-        return response.redirect('/news')
-    }
     let html = await ejs.renderFile('./ejs/index.ejs', {
+        url: url,
         type: type,
         option : option,
         db: db,
