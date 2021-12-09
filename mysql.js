@@ -6,9 +6,9 @@ module.exports = {
 
 
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
+    host: '94.244.97.176',
+    user: 'admin2',
+    password: 'KTU_Server',
     database: 'system'
 })
 

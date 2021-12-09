@@ -6,7 +6,7 @@ const path = require('path')
 const ejs = require('ejs')
 const server = express()
 
-const port = 80
+const port = 82
 const pepper = 'Come \'n Shed'
 
 const db = require('./mysql')
@@ -21,7 +21,6 @@ server.use(express.urlencoded())
 server.use(express.json())
 server.use(cookieParser())
 server.use(session({secret: 'SHA256'}))
-
 
 server.get('/debug', (request, response) => {
     response.send(hash('Antanas', pepper))
@@ -140,6 +139,38 @@ server.post('/news_update',  async (request, response) => {
     let value = await request.body.value
     await db.query(`UPDATE system.news SET content = '${value}' WHERE id = '${id}'`);
     response.send('Done!')
+})
+server.post('/order_new', async (request, response) =>{
+    error = ''
+    status = true
+    dishes = request.body.dish
+    amounts = request.body.amount
+    tip = parseFloat(request.body.tip)
+    if(isNaN(tip)){
+        status = false
+        error += '<br>Klaidingai įvedėte arbatpinigius'
+    }
+    if(!dishes || dishes.length !== amounts.length){
+        status = false
+        error += '<br>Pasirinkite patiekalą(-us)'
+    }
+    if(status){
+        let db_id = await db.query(`SELECT id FROM client WHERE '${request.session.account.username}' = fk_account`)
+        let client_id = db_id[0]["id"]
+        let price = 0.0
+        for(let i = 0; i < dishes.length; i++){
+            let db_price = await db.query(`SELECT price FROM dish WHERE id = ${dishes[i]}`);
+            price += db_price[0]["price"] * amounts[i]
+        }
+        let result = await db.query(`INSERT INTO system.order(fk_client, order_date, price, tip) VALUE (${client_id}, NOW(), ${price}, ${tip})`)
+        let order_id = result.insertId
+        for(let i = 0; i < dishes.length; i++){
+            await db.query(`INSERT INTO order_dish(count, fk_dish, fk_order) VALUE (${amounts[i]}, ${dishes[i]}, ${order_id})`)
+        }
+    }
+    request.session.single = true
+    request.session.error = error
+    response.redirect('/order_new')
 })
 server.get('/logout', (request, response) => {
     request.session.account = ''

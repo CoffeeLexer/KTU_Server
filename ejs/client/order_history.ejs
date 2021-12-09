@@ -1,0 +1,37 @@
+<%
+    let user = session.account.username
+    let client_id = (await db.query(`SELECT id FROM client WHERE fk_account = '${user}'`))[0]["id"]
+    let db_orders = await db.query(`SELECT * FROM system.order WHERE fk_client = ${client_id} ORDER BY order_date DESC`)
+%>
+
+<table style="width: 100%">
+    <tr>
+        <th><p>Data</p></th>
+        <th><p>Kaina</p></th>
+        <th><p>Statusas</p></th>
+    </tr>
+    <%
+        db_orders.forEach(order =>{
+            let time = new Date(order.order_date)
+            let time_s = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()} ${time.getHours()}:${time.getMinutes()}`
+            let status = ''
+            if(!order.fk_worker){
+                status = 'Laukiama priėmimo'
+            }
+            else if(!order.order_end_date){
+                status = 'Užsakymas vykdomas'
+            }
+            else{
+                status = 'Užsakymas įvykdytas'
+            }
+            %>
+            <tr>
+                <th><%- time_s %></th>
+                <th><%- order.price.toFixed(2) %> €</th>
+                <th><%- status %></th>
+                <th><a href="/order_details/<%- order.id %>">Išsami informacija</a></th>
+            </tr>
+            <%
+        })
+     %>
+</table>

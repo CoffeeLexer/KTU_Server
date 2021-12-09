@@ -1,0 +1,55 @@
+<%
+let user = session.account.username
+let id = parseInt(url.split('/')[1])
+let client_id = (await db.query(`SELECT id FROM client WHERE fk_account = '${user}'`))[0]["id"]
+let db_order = await db.query(`SELECT * FROM system.order WHERE id = ${id} AND fk_client = ${client_id}`)
+if(db_order.length === 0){
+%>
+    <%- await include('../error_404'); %>
+<%
+}
+else{
+    order = db_order[0]
+    let dishes = await db.query(`SELECT dish.name as dish_name, price, order_dish.count as dish_count FROM order_dish INNER JOIN dish ON fk_dish = id WHERE fk_order = ${order.id}`)
+    let sum = 0
+    let time = new Date(order.order_date)
+    let time_s = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()} ${time.getHours()}:${time.getMinutes()}`
+    let status = ''
+    if (!order.fk_worker) {
+        status = 'Laukiama priėmimo'
+    } else if (!order.order_end_date) {
+        status = 'Užsakymas vykdomas'
+    } else {
+        status = 'Užsakymas įvykdytas'
+    }
+%>
+<div class="news_item">
+    <h1>Užsakymo išsami informacija</h1>
+    <p>Užsakymo laikas: <%- time_s %></p>
+    <p>Statusas: <%- status %></p>
+    <p>Užsakyti patiekalai:</p>
+    <table style="border-collapse: collapse; width: 50%">
+        <tr>
+            <th>Pavadinimas</th>
+            <th>Kaina</th>
+            <th>Kiekis</th>
+        </tr>
+        <%
+        dishes.forEach(dish => {
+            sum += dish.price * dish.dish_count
+        %>
+        <tr>
+            <th><%- dish.dish_name %></th>
+            <th><%- dish.price.toFixed(2) %> €</th>
+            <th><%- dish.dish_count %></th>
+        </tr>
+        <%
+        })
+        %>
+        <tr style="border-top: 2px white solid">
+            <th>Iš viso: </th>
+            <th><%- sum.toFixed(2) %> €</th>
+        </tr>
+    </table>
+</div>
+<% } %>
