@@ -172,6 +172,33 @@ server.post('/order_new', async (request, response) =>{
     request.session.error = error
     response.redirect('/order_new')
 })
+server.post('/approve_order', async (request, response) => {
+    let error = ''
+    let user = request.session.account.username
+    let worker_id = (await db.query(`SELECT id FROM worker WHERE fk_account = '${user}'`))[0]['id']
+    let order_id = request.body.order_id
+    let db_order = await db.query(`SELECT *
+                                   FROM system.order
+                                   WHERE id = ${order_id}
+                                     AND order_end_date IS NULL
+                                     AND (fk_worker IS NULL OR fk_worker = ${worker_id})`)
+    if (!db_order) {
+        error = 'Užsakymą priėmė kitas darbuotojas'
+    } else {
+        order = db_order[0]
+        if (!order['fk_worker']) {
+            await db.query(`UPDATE system.order
+                            SET fk_worker = '${worker_id}' WHERE id = ${order_id}`)
+        } else if (!order['order_end_date']) {
+            await db.query(`UPDATE system.order
+                            SET order_end_date = NOW() WHERE id = ${order_id}`)
+        }
+    }
+    request.session.single = true
+    request.session.error = error
+    response.redirect(`/order_approved`)
+})
+
 server.get('/logout', (request, response) => {
     request.session.account = ''
     response.redirect('/')

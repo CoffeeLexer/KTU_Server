@@ -1,0 +1,38 @@
+<%
+    pending_orders = await db.query(`SELECT system.order.id, order_date, price, tip, client.fk_account AS client_name FROM system.order INNER JOIN client ON client.id = system.order.fk_client WHERE fk_worker IS NULL ORDER BY order_date DESC`)
+%>
+
+<h1>Priimami užsakymai</h1>
+
+<% if(pending_orders.length > 0){ %>
+
+<table style="width: 100%">
+    <tr>
+        <th><p>Data</p></th>
+        <th><p>Kas užsakė</p></th>
+        <th><p>Suma</p></th>
+        <th><p>Arbatpinigiai</p></th>
+    </tr>
+    <%
+    pending_orders.forEach(order =>{
+        let time = new Date(order.order_date)
+        let time_s = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()} ${time.getHours()}:${time.getMinutes()}`
+    %>
+    <tr>
+        <th><%- time_s %></th>
+        <th><%- order.client_name %></th>
+        <th><%- order.price.toFixed(2) %> €</th>
+        <th><%- order.tip.toFixed(2) %> €</th>
+        <th><a href="/order_details/<%- order.id %>">Išsami informacija</a></th>
+    </tr>
+    <%
+    })
+    %>
+</table>
+<%
+} else{
+%>
+    <h1 style="color: red">Užsakymų nėra</h1>
+<%
+}
+%>
