@@ -190,13 +190,23 @@ server.post('/approve_order', async (request, response) => {
             await db.query(`UPDATE system.order
                             SET fk_worker = '${worker_id}' WHERE id = ${order_id}`)
         } else if (!order['order_end_date']) {
-            await db.query(`UPDATE system.order
-                            SET order_end_date = NOW() WHERE id = ${order_id}`)
+            let driver = await db.query(`SELECT worker.id, username FROM account INNER JOIN worker ON account.username = worker.fk_account WHERE account.username = '${ request.body.driver }'`)
+            if(driver.length > 0) {
+                await db.query(`UPDATE system.order
+                                SET order_end_date = NOW(), fk_driver = ${ driver[0]['id'] }
+                                WHERE id = ${order_id}`)
+            }
+            else{
+                error = 'Darbuotojas/vairuotojas tokiu vardu neegzistuoja'
+            }
         }
     }
     request.session.single = true
     request.session.error = error
-    response.redirect(`/order_approved`)
+    if(error === '')
+        response.redirect(`/order_approved`)
+    else
+        response.redirect(`/order_details/${order_id}`)
 })
 
 server.get('/logout', (request, response) => {

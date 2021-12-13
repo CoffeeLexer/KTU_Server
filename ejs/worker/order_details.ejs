@@ -27,6 +27,9 @@ else{
     }
 %>
 <div class="news_item">
+    <% if(session.error !== ''){ %>
+        <p style="color: red"><%- session.error %></p>
+    <% } %>
     <h1>Užsakymo išsami informacija</h1>
     <p><b>Užsakymo laikas:</b> <%- time_s %></p>
     <p><b>Statusas:</b> <%- status %></p>
@@ -55,12 +58,11 @@ else{
         </tr>
     </table>
     <form method="post" action="/approve_order">
-        <% if(!order.order_end_date){
-            %>
-            <input type="hidden" name="order_id" value="<%- id %>">
-            <input type="submit" value="<%- submit_text %>">
-            <%
-        } %>
+        <% if(order.fk_worker && !order.order_end_date) { %>
+            <label for="driver">Vežėjas</label><input type="text" id="driver" name="driver">
+        <% } %>
+        <input type="hidden" name="order_id" value="<%- id %>">
+        <input type="submit" value="<%- submit_text %>">
     </form>
 </div>
 <% } %>
