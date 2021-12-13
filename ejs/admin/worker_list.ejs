@@ -1,0 +1,16 @@
+<div class="news_item" onclick="redirect('/worker_add')">
+    ➕Naujas Darbuotojas
+</div>
+<br>
+<hr>
+<h1>Naikinti darbuotoją</h1>
+<%
+let data = await db.query("SELECT * FROM system.worker")
+data.forEach(element => {
+%>
+    <div class="news_item" onclick="redirect('<%= '/worker_delete/'+element['id'] %>')">
+        <%= element['fk_account'] %>
+    </div>
+<%
+})
+%>

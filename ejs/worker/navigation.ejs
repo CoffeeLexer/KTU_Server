@@ -1,3 +1,10 @@
+<%
+    worker = session.account.username
+    worker_id = (await db.query(`SELECT id FROM worker WHERE fk_account = '${worker}'`))[0]['id']
+    db_count = (await db.query(`SELECT COUNT(id) AS count FROM system.order WHERE fk_worker = ${worker_id} AND order_end_date IS NULL`))[0]['count']
+    db_waiting_count = (await db.query(`SELECT COUNT(id) AS count FROM system.order WHERE fk_worker IS NULL`))[0]['count']
+    count = db_count ? db_count : 0
+ %>
 <ul class="navigation">
     <li class="dropdown">
         <a href="/email_list" class="drop-button">El. laiškai</a>
@@ -5,8 +12,8 @@
     <li class="dropdown">
         <a href="javascript:void(0)" class="drop-button">Užsakymai</a>
         <div class="dropdown-content">
-            <a href="/order_list">Sąrašas</a>
-            <a href="/order_approved">Priimti</a>
+            <a href="/order_list">Sąrašas: <%- db_waiting_count%></a>
+            <a href="/order_approved">Priimti: <%- count %></a>
         </div>
     </li>
     <li style="float: right">

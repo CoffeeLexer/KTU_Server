@@ -42,9 +42,39 @@
                 <%-await include('dish')%>
                 <%
                 break
+            case 'worker_add':
+                %>
+                <%-await include('worker_add')%>
+                <%
+                break
+            case 'worker_list':
+                %>
+                <%-await include('worker_list')%>
+                <%
+                break
+            case 'dish_new':
+                %>
+                <%-await include('dish_new')%>
+                <%
+                break
+            case 'email_new':
+                %>
+                <%-await include('email_new')%>
+                <%
+                break
+            case 'news_new':
+                %>
+                <%-await include('news_new')%>
+                <%
+                break
             case 'admin_register':
                 %>
                 <%-await include('admin_register')%>
+                <%
+                break
+            case 'client_list':
+                %>
+                <%-await include('client_list')%>
                 <%
                 break
             default:

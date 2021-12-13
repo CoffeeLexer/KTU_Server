@@ -1,0 +1,30 @@
+<div class="news_item">
+    <div style="color: red; padding: 4px"
+    <%
+    if(session.error === '') {
+    %>
+         class="hidden"
+            <%
+            }
+            %>
+    >
+        <%-
+        session.error
+        %>
+    </div>
+    <form method="post">
+        <label>Gavėjas/-jai</label>
+        <br>
+        <input type="text" name="getters" style="width: 100%">
+        <br>
+        <label>Tema</label>
+        <br>
+        <input type="text" name="topic" style="width: 100%" class="simple" maxlength="256">
+        <br>
+        <label>Turinys</label>
+        <br>
+        <textarea name="content" style="width: 100%" class="simple"></textarea>
+        <hr>
+        <input type="submit" style="width: 100%" value="Siųsti">
+    </form>
+</div>

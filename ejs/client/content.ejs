@@ -1,6 +1,37 @@
 <div class="container">
     <%
         switch (option) {
+            case 'default':
+            case 'email_list':
+                %>
+                <%-await include('email_list')%>
+                <%
+                break
+            case 'email_view':
+                %>
+                <%-await include('email_view')%>
+                <%
+                break
+            case 'email_new':
+                %>
+                <%-await include('email_new')%>
+                <%
+                break
+            case 'order_new':
+                %>
+                <%-await include('order_new')%>
+                <%
+                break
+            case 'order_history':
+                %>
+                <%-await include('order_history')%>
+                <%
+                break
+            case 'order_details':
+                %>
+                <%-await include('order_details')%>
+                <%
+                break
             default:
                 %>
                 <%-await include('../error_404');%>

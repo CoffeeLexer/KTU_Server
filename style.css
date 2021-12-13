@@ -78,7 +78,18 @@ input[type=text] {
     border: solid 2px #3b568a;
     border-radius: 4px;
 }
-input[type=submit] {
+input[type=password] {
+    background-color: #5273b2;
+    border: solid 2px #3b568a;
+    border-radius: 4px;
+}
+input[type=submit], input[type=number], button {
+    margin-top: 4px;
+    background-color: #5273b2;
+    border: solid 2px #3b568a;
+    border-radius: 4px;
+}
+select {
     margin-top: 4px;
     background-color: #5273b2;
     border: solid 2px #3b568a;
@@ -103,8 +114,6 @@ input[type=submit] {
     --svg-color: #000000;
 }
 
-
-
 .dropdown-content {
     display: none;
     position: absolute;
@@ -128,4 +137,13 @@ input[type=submit] {
 
 .dropdown:hover .dropdown-content {
     display: block;
+}
+
+.form_dish{
+    margin: 5px;
+}
+
+.dish_element{
+    display: inline-block;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }

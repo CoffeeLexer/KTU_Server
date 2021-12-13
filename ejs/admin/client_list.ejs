@@ -1,0 +1,21 @@
+<h1>Klientų Blokavimas</h1>
+<%
+let data = await db.query("SELECT id, username, email, active FROM system.client left outer join system.account a on a.username = client.fk_account")
+data.forEach(element => {
+%>
+    <div
+<%
+    if(!element['active']) {
+%>
+    style="color: red"
+<%
+}
+%>
+            class="news_item" onclick="redirect('<%= '/client_block/'+element['id'] %>')">
+        <%= element['username'] %>
+    </div>
+<%
+})
+%>
+<hr>
+<div style="color: red">Užblokuotas vartotojas</div>
