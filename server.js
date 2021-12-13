@@ -109,6 +109,35 @@ server.post('/order_new', async (request, response) =>{
     request.session.error = error
     response.redirect('/order_new')
 })
+server.post('/register', async (request, response) => {
+    let error = ''
+    let username = request.body.username
+    let email = request.body.email
+    let password_1 = request.body.password_1
+    let password_2 = request.body.password_2
+    error = username ? error : error + '<br>Vartotojo vardas nėra užpildytas'
+    error = email ? error : error + '<br>Vartotojo el. paštas nėra užpildytas'
+    error = password_1 ? error : error + '<br>Vartotojo slaptažodis nėra užpildytas'
+    error = password_2 ? error : error + '<br>Vartotojo kartojamas slaptažodis nėra užpildytas'
+    if(!error)
+        error = password_1 === password_2 ? error : '<br>Slaptažodžiai turi sutapti'
+    if(!error) {
+        let result = await db.query(`SELECT * FROM account WHERE username = '${username}'`)
+        if(result.length !== 0)
+            error += '<br>Vartotojas tokiu vardu jau užregistruotas'
+        result = await db.query(`SELECT * FROM account WHERE email = '${email}'`)
+        if(result.length !== 0)
+            error += '<br>Vartotojas tokiu el. paštu jau užregistruotas'
+    }
+    if(!error) {
+        await db.query(`INSERT INTO account(username, email, password) value ('${username}', '${email}', '${hash(password_1, pepper)}')`)
+        await db.query(`INSERT INTO client(fk_account) VALUE ('${username}')`)
+        return response.redirect('/login')
+    }
+    request.session.single = true
+    request.session.error = error.toString().substr(4)
+    response.redirect('/register')
+})
 server.post('/approve_order', async (request, response) => {
     let error = ''
     let user = request.session.account.username
@@ -266,8 +295,7 @@ server.get(/\/worker_delete\/[0-9]+/, async (request, response) => {
     let id = request.url.substr(1)
     id = id.split('/')[1]
     let name = (await db.query(`SELECT * FROM system.worker WHERE id = '${id}'`))[0]['fk_account']
-    await db.query(`DELETE FROM system.worker WHERE fk_account = '${name}'`)
-    await db.query(`DELETE FROM system.account WHERE username = '${name}'`)
+    await db.query(`UPDATE account SET active = NOT active WHERE username = '${name}'`)
     response.redirect('/worker_list')
 })
 server.get(/\/client_block\/[0-9]+/, async (request, response) => {

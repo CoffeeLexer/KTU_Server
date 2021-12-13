@@ -3,14 +3,25 @@
 </div>
 <br>
 <hr>
-<h1>Naikinti darbuotoją</h1>
+<h1>Blokuoti darbuotoją</h1>
 <%
-let data = await db.query("SELECT * FROM system.worker")
+let data = await db.query("SELECT id, username, email, active FROM system.worker left outer join system.account a on a.username = worker.fk_account")
 data.forEach(element => {
 %>
-    <div class="news_item" onclick="redirect('<%= '/worker_delete/'+element['id'] %>')">
-        <%= element['fk_account'] %>
+<div
+<%
+if(!element['active']) {
+%>
+style="color: red"
+<%
+}
+%>
+
+            class="news_item" onclick="redirect('<%= '/worker_delete/'+element['id'] %>')">
+        <%= element['username'] %>
     </div>
 <%
 })
 %>
+<hr>
+<div style="color: red">Užblokuotas darbuotojas</div>
