@@ -1,0 +1,10 @@
+<%
+let data = await db.query("SELECT * FROM system.news")
+data.forEach(element => {
+%>
+    <div class="news_item" onclick="redirect('<%= '/news_item/'+element['id'] %>')">
+        <%= element['content'].split('.')[0] %>
+    </div>
+<%
+})
+%>

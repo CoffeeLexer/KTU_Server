@@ -1,0 +1,36 @@
+<div style="color: red; padding: 4px"
+<%
+if(session.error === '') {
+%>
+     class="hidden"
+        <%
+        }
+        %>
+>
+    <%-
+    session.error
+    %>
+</div>
+<br><br><br>
+<div style="width: 33ch; margin: auto;">
+    <form method="post">
+        <label>Vartotojo vardas</label>
+        <br>
+        <input type="text" name="username" style="width: 100%" maxlength="32" size="33">
+        <br>
+        <label>El. Paštas</label>
+        <br>
+        <input type="email" name="email" style="width: 100%" class="simple" maxlength="256">
+        <br>
+        <label>Slaptažodis</label>
+        <br>
+        <input type="password" name="password_1" style="width: 100%" class="simple">
+        <br>
+        <label>Pakartokite slaptažodį</label>
+        <br>
+        <input type="password" name="password_2" style="width: 100%" class="simple">
+        <hr>
+        <input type="submit" style="width: 100%" value="Registruotis">
+    </form>
+</div>
+<br><br><br><br>

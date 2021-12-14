@@ -1,0 +1,19 @@
+<%
+let id = url.split('/')[1]
+let data = await db.query(`SELECT * FROM system.dish WHERE id ='${id}'`)
+element = data[0]
+%>
+<div class="news_item">
+    <textarea id="name" class="simple" style="resize: vertical; width: 100%;"><%=element['name']%></textarea>
+    <textarea id="description" class="simple" style="resize: vertical; width: 100%;"><%=element['description']%></textarea>
+    <textarea id="price" class="simple" style="resize: vertical; width: 100%;"><%=element['price'].toFixed(2)%></textarea>
+    <hr>
+    <div style="width: 100%; text-align: right">
+        <button class="simple" onclick="news_update('<%=id%>', document.getElementById('news').value)">
+            Patvirtinti
+        </button>
+        <button class="simple" onclick="redirect('/news_item/<%=id%>')">
+            Atšaukti
+        </button>
+    </div>
+</div>

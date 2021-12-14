@@ -1,0 +1,34 @@
+<ul class="navigation">
+    <li class="dropdown">
+        <a href="/email_list" class="drop-button">El. laiškai</a>
+    </li>
+    <li class="dropdown">
+        <a href="/admin_register" class="drop-button">Naujas Admin</a>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="drop-button">Naujienos</a>
+        <div class="dropdown-content">
+            <a href="/news_list">Sąrašas</a>
+            <a href="/news_new">Naujas</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="drop-button">Patiekalai</a>
+        <div class="dropdown-content">
+            <a href="/dish_list">Sąrašas</a>
+            <a href="/dish_new">Naujas</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="/client_list" class="drop-button">Klientai</a>
+    </li>
+    <li class="dropdown">
+        <a href="/worker_list" class="drop-button">Darbuotojai</a>
+    </li>
+
+    <li style="float: right"><a href="/logout"
+        <%if(option === 'logout') {%>
+            class="active"
+        <%}%>
+        >Atsijungti</a></li>
+</ul>

@@ -1,0 +1,60 @@
+<div class="news_item" onclick="redirect('/email_new')">
+    ✍️ Naujas Laiškas
+</div>
+<br>
+Pašto dežutė
+<%
+let user = session.account.username
+let letters_received = await db.query(`SELECT * FROM (SELECT * FROM system.email_recipient WHERE fk_recipient = '${user}') T LEFT JOIN system.email ON T.fk_email = email.id ORDER BY date_time desc`)
+let letters_sent = await db.query(`SELECT * FROM system.email WHERE fk_author = '${user}' ORDER BY date_time desc`)
+let amount = letters_received.length + letters_sent.length
+let a_max = letters_received.length
+let b_max = letters_sent.length
+let a = 0, b = 0
+for(let i = 0; i < amount; i++) {
+    let element
+    let type
+    if(a < a_max && b < b_max) {
+        if(letters_received[a]['date_time'] > letters_sent[b]['date_time']) {
+            element = letters_received[a]
+            type = 'received'
+            a++
+        }
+        else {
+            element = letters_sent[b]
+            type = 'sent'
+            b++
+        }
+    }
+    else {
+        if(b === b_max) {
+            element = letters_received[a]
+            type = 'received'
+            a++
+        }
+        else {
+            element = letters_sent[b]
+            type = 'sent'
+            b++
+        }
+    }
+if(type === 'received') {
+%>
+<div class="news_item" onclick="redirect('/email_view/inbox/<%=element['id']%>')">
+    📥 <%=element['topic']%>
+    <hr>
+    Gauta:<%=element['date_time']%>
+</div>
+<%
+}
+else {
+%>
+<div class="news_item" onclick="redirect('/email_view/outbox/<%=element['id']%>')">
+    📤 <%=element['topic']%>
+    <hr>
+    Išsiųsta:<%=element['date_time']%>
+</div>
+<%
+}
+}
+%>

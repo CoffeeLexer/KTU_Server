@@ -1,0 +1,47 @@
+<%
+    let user = session.account.username
+    let dishes = await db.query(`SELECT id, name, price FROM dish`)
+    drop_down = `<option value="" selected disabled hidden>Pasirinkite</option>`
+    dishes.forEach(dish => {
+        drop_down += `<option value="${dish["id"]}">${dish["name"]} ${dish["price"]}€</option>`
+    })
+%>
+
+<h1>Pasirinkite patiekalus</h1>
+<div style="color: red; padding: 4px"
+<%
+if(session.error === '') {
+%>
+     class="hidden"
+        <%
+        }
+        %>
+>
+    <%-
+    session.error
+    %>
+</div>
+<form class="news_item" method="post">
+    <label for="tip">Arbatpinigiai €</label>
+    <input type="text" name="tip" id="tip" value="0">
+    <div id="dishes"></div>
+    <button id="add_dish" type="button">Pridėti</button>
+    <input type="submit" value="Užsakyti">
+</form>
+<script>
+    let button = document.getElementById("add_dish")
+    let div = document.getElementById("dishes")
+    index = 0
+    button.addEventListener("click", function(){
+        select = `<%- drop_down %>`
+        div.innerHTML +=    `<div class="form_dish">
+                                <label for="select_dish" style="padding-right: 5px">Patiekalas</label>
+                                <select name="dish[${index}]" class="dish_element" id="select_dish[${index}]">
+                                    ${select}
+                                </select>
+                                <label for="select_count" style="padding-right: 5px">Kiekis</label>
+                                <input name="amount[${index}]" class="dish_element" type="number" id="select_count" value=1>
+                            </div>`
+        index++;
+    })
+</script>

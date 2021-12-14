@@ -1,0 +1,23 @@
+<ul class="navigation">
+    <li>
+        <a href="/news"
+        <%if(option === 'news') {%>
+           class="active"
+        <%}%>
+        >Naujienos</a></li>
+    <li><a href="/dishes"
+        <%if(option === 'dishes') {%>
+           class="active"
+        <%}%>
+        >Patiekalai</a></li>
+    <li><a href="/contacts"
+        <%if(option === 'contacts') {%>
+           class="active"
+        <%}%>
+        >Kontaktai</a></li>
+    <li style="float: right"><a href="/login"
+        <%if(option === 'login' || option === 'register') {%>
+           class="active"
+        <%}%>
+        >Prisijungti</a></li>
+</ul>

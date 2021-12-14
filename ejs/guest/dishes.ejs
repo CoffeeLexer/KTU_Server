@@ -1,0 +1,10 @@
+<%
+let data = await db.query("SELECT * FROM system.dish")
+data.forEach(element => {
+%>
+    <div class="news_item" onclick="redirect('<%= '/dish/'+element['id'] %>')">
+        <%= element['name'] %>
+    </div>
+<%
+})
+%>

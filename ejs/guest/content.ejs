@@ -1,0 +1,52 @@
+<div class="container">
+    <%
+        switch (option) {
+            case 'default':
+            case 'news':
+                %>
+                <%-await include('news');%>
+                <%
+                break
+                case 'news_item':
+                %>
+                <%-await include('news_item');%>
+                <%
+                break
+            case 'dishes':
+                %>
+                <%-await include('dishes');%>
+                <%
+                break
+            case 'dish':
+                %>
+                <%-await include('dish');%>
+                <%
+                break
+            case 'login':
+                %>
+                <%-await include('login');%>
+                <%
+                break
+            case 'contacts':
+                %>
+                <%-await include('contacts');%>
+                <%
+                break
+            case 'register':
+                %>
+                <%-await include('register');%>
+                <%
+                break
+            case 'branch':
+                %>
+                <%-await include('branch');%>
+                <%
+                break
+            default:
+                %>
+                <%-await include('../error_404');%>
+                <%
+                break
+        }
+    %>
+</div>

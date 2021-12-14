@@ -1,0 +1,11 @@
+<%
+let id = url.split('/')[1]
+let data = await db.query(`SELECT * FROM system.news WHERE id ='${id}'`)
+element = data[0]
+%>
+<div class="news_item">
+    <%= element['content'] %>
+</div>
+<%
+
+%>

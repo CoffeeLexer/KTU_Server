@@ -1,0 +1,57 @@
+<div class="container">
+    <%
+        switch (option) {
+            case 'default':
+            case 'email_list':
+                %>
+                <%-await include('email_list')%>
+                <%
+                break
+            case 'email_view':
+                %>
+                <%-await include('email_view')%>
+                <%
+                break
+            case 'news_list':
+                %>
+                <%-await include('news_list')%>
+                <%
+                break
+            case 'news_item':
+                %>
+                <%-await include('news_item')%>
+                <%
+                break
+            case 'news_edit':
+                %>
+                <%-await include('news_edit')%>
+                <%
+                break
+            case 'dish_list':
+                %>
+                <%-await include('dish_list')%>
+                <%
+                break
+            case 'dish_edit':
+                %>
+                <%-await include('dish_edit')%>
+                <%
+                break
+            case 'dish':
+                %>
+                <%-await include('dish')%>
+                <%
+                break
+            case 'admin_register':
+                %>
+                <%-await include('admin_register')%>
+                <%
+                break
+            default:
+                %>
+                <%-await include('../error_404');%>
+                <%
+                break
+        }
+    %>
+</div>

@@ -1,0 +1,17 @@
+<%
+let id = url.split('/')[1]
+let data = await db.query(`SELECT * FROM system.news WHERE id ='${id}'`)
+element = data[0]
+%>
+<div class="news_item">
+    <textarea id="news" class="simple" cols="69" style="resize: vertical;"><%=element['content']%></textarea>
+    <hr>
+    <div style="width: 100%; text-align: right">
+        <button class="simple" onclick="news_update('<%=id%>', document.getElementById('news').value)">
+            Patvirtinti
+        </button>
+        <button class="simple" onclick="redirect('/news_item/<%=id%>')">
+            Atšaukti
+        </button>
+    </div>
+</div>
